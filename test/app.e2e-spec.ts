@@ -1,11 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module.js';
+import * as request from 'supertest';
+import { AppModule } from './../src/app.module';
 
 describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+  let app: INestApplication;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -16,11 +15,34 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/ (GET) - Overview', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect('Hello World!');
+      .expect((res) => {
+        expect(res.body.name).toBeDefined();
+        expect(res.body.roadmap).toBeDefined();
+      });
+  });
+
+  it('/hello (GET) - i18n English default', () => {
+    return request(app.getHttpServer())
+      .get('/hello')
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.message).toBe('Hello World!');
+        expect(res.body.currentLanguage).toBe('en');
+      });
+  });
+
+  it('/hello?lang=vi (GET) - i18n Vietnamese', () => {
+    return request(app.getHttpServer())
+      .get('/hello?lang=vi')
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.message).toBe('Xin chào thế giới!');
+        expect(res.body.currentLanguage).toBe('vi');
+      });
   });
 
   afterEach(async () => {

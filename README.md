@@ -1,11 +1,61 @@
-# NestJS Architecture & Overview Handbook: Cẩm Nang Kiến Thức Toàn Tập
+# NestJS Tutorial & Architecture Handbook: Sun* Training Guideline
 
-> **Tài liệu tổng hợp toàn diện 10 chuyên đề cốt lõi của NestJS Overview**, được biên soạn chuẩn chỉn chu bám sát theo [Tài liệu chính thức của NestJS (docs.nestjs.com)](https://docs.nestjs.com/) phục vụ quá trình đào tạo và thực hành dự án tại Sun* / NodeJS Course.
+> **Dự án thực hành và cẩm nang kiến thức NestJS**, được xây dựng chuẩn mực theo giáo trình đào tạo tại Sun Asterisk ([Training-Guideline / Nodejs / tutorial.md](https://github.com/framgia/Training-Guideline/blob/master/Nodejs/tutorial.md)) và [NestJS Official Documentation](https://docs.nestjs.com/).
 >
-> **Tài liệu tham khảo chính thức:**
-> - [NestJS Official Documentation - Overview](https://docs.nestjs.com/)
-> - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-> - [RxJS Documentation](https://rxjs.dev/)
+> 🎯 **Quy trình nộp bài:** Quản lý và theo dõi tiến độ qua các **Pull Requests (PR)** hàng ngày:
+> 1. Tạo branch tính năng tương ứng.
+> 2. Request Copilot review + fix comment + self-review.
+> 3. Gửi link Pull Request vào Thread Slack/Chatwork cho Mentor/Trainer (**Pham Thanh Binh**) review.
+
+---
+
+## 📌 Lộ Trình Pull Requests (Tutorial Roadmap)
+
+| PR # | Nhánh (Branch) | Nội dung công việc | Trạng thái |
+| :--- | :--- | :--- | :---: |
+| **Pull 1** | `pull-1-init-project-i18n-swagger` | Khởi tạo dự án NestJS + 1 API Hello World + Cấu hình đa ngôn ngữ `nestjs-i18n` + Tài liệu tương tác Swagger OpenAPI (`/api/docs`) |  **HOÀN THÀNH** |
+| **Pull 2** | `pull-2-manual-migration-auth-redis` | Thiết lập Migration Database thủ công (TypeORM) + Xử lý Authentication (Register, Login, Logout dùng Redis lưu blacklist token, Get Current User) | ⏳ *Kế tiếp* |
+| **Pull 3** | `pull-3-crud-restful-api` | Triển khai các API CRUD chuẩn RESTful + Format response bằng Serializer + Validate DTO + Search, Filter, Pagination | ⏳ *Kế tiếp* |
+| **Pull 4** | `pull-4-file-upload-multer` | Xử lý upload file đa phương tiện với Multer & Cloudinary lưu trữ ảnh | ⏳ *Kế tiếp* |
+| **Pull 5** | `pull-5-mailer-bull-schedule` | Gửi mail bất đồng bộ với `@nestjs/bull` (Redis Queue) và lập lịch định kỳ với `@nestjs/schedule` | ⏳ *Kế tiếp* |
+
+---
+
+## 🌟 Chi Tiết Triển Khai Pull 1
+
+### 1. Cấu hình Đa ngôn ngữ Quốc tế hóa (`nestjs-i18n`)
+- Hỗ trợ đa ngôn ngữ với các file JSON định nghĩa bản dịch tại thư mục `src/i18n/`:
+  - `en/app.json`: Bản dịch tiếng Anh (mặc định)
+  - `vi/app.json`: Bản dịch tiếng Việt
+  - `ja/app.json`: Bản dịch tiếng Nhật
+- Cơ chế nhận diện ngôn ngữ linh hoạt qua các Resolver:
+  - Query param: `?lang=vi` hoặc `?l=vi`
+  - Header: `x-custom-lang: vi`
+  - Header chuẩn: `Accept-Language: vi-VN,vi;q=0.9`
+
+### 2. Cấu hình Swagger OpenAPI (`/api/docs`)
+- Sử dụng `@nestjs/swagger` và `swagger-ui-express`.
+- Tự động sinh tài liệu API trực quan tại: `http://localhost:3000/api/docs`.
+- Tích hợp sẵn BearerAuth (`JWT-auth`) phục vụ cho các Pull tiếp theo.
+
+### 3. API Hello World Đa Ngôn Ngữ (`GET /api/v1/hello`)
+- Endpoint: `GET /api/v1/hello`
+- Hỗ trợ query param `lang` (`en`, `vi`, `ja`).
+- Phản hồi mẫu khi gọi tiếng Việt:
+  ```json
+  {
+    "success": true,
+    "statusCode": 200,
+    "timestamp": "2026-11-09T07:58:00.000Z",
+    "data": {
+      "message": "Xin chào thế giới!",
+      "welcome": "Chào mừng bạn đến với khóa học NestJS Tutorial!",
+      "description": "Tính năng đa ngôn ngữ (i18n) và Swagger đã được thiết lập thành công.",
+      "currentLanguage": "vi",
+      "timestamp": "2026-11-09T07:58:00.000Z"
+    }
+  }
+  ```
 
 ---
 

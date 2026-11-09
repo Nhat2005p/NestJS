@@ -1,0 +1,5 @@
+{
+  "hello": "Hello World!",
+  "welcome": "Welcome to NestJS Tutorial!",
+  "description": "Internationalization (i18n) and Swagger have been successfully configured."
+}

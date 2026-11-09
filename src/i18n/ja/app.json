@@ -1,0 +1,5 @@
+{
+  "hello": "こんにちは世界！",
+  "welcome": "NestJSチュートリアルへようこそ！",
+  "description": "国際化（i18n）とSwaggerの設定が正常に完了しました。"
+}
